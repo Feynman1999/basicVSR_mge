@@ -1,0 +1,1 @@
+python  tools/test.py  configs/restorers/BasicVSR/basicVSR_test_valid.py --gpuids 0 -d
