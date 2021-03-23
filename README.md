@@ -90,7 +90,7 @@ you can find the results in workdir
 
 ### test on test dataset
 
-same to valid, to fix the config file first
+same to valid, to fix the config file `configs/restorers/BasicVSR/basicVSR_test_test.py`  first
 
 ```bash
 cd xxx/basicVSR_mge

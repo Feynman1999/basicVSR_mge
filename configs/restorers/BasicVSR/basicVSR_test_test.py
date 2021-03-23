@@ -1,7 +1,7 @@
 load_path = './workdirs/epoch_24'
-dataroot = "/data/home/songtt/chenyuxiang/datasets/REDS/test/test_sharp_bicubic"
+dataroot = "/work_base/datasets/REDS/test/test_sharp_bicubic"
 exp_name = 'basicVSR_track1_test_for_test'
-eval_part =  tuple([ str(i).zfill(3) for i in range(0, 30)])
+eval_part =  None
 # you can custom values before, for the following params do not change if you are new to this project
 ###########################################################################################
 # please make sure your gpu has 11GB memory at least, otherwise it will OOM
