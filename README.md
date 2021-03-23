@@ -25,7 +25,7 @@ As of 2021.03.21, the **official implementation（https://github.com/ckkelvincha
 * Linux machine (you do not need to care about cuda version, only need NVIDIA graphics driver version greater than 418)
 * python3.7
 * `pip3 install megengine -f https://megengine.org.cn/whl/mge.html`
-* `pip install -r requirement.txt `
+* `pip install -r requirements.txt `
 
 
 
