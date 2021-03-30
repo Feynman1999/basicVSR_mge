@@ -10,7 +10,7 @@ A megengine implemention of basicVSR (CVPR 2021)
 | basicVSR  | BasicVSR: The Search for Essential Components in Video Super-Resolution and Beyond | https://arxiv.org/abs/2012.02181 |
 |           |                                                              |                                  |
 
-As of 2021.03.21, the **official implementation（https://github.com/ckkelvinchan/BasicVSR-IconVSR）** has **not** been released. If the implementation of this repo is helpful to you, just star it, thanks!  
+As of 2021.03.21, the **official implementation（https://github.com/ckkelvinchan/BasicVSR-IconVSR** has **not** been released. If the implementation of this repo is helpful to you, just star it, thanks!  
 
 <img src="https://z3.ax1x.com/2021/03/21/64aQC6.png" alt="basicVSR" style="zoom: 33%;" />
 
