@@ -77,6 +77,7 @@ change the first three line for your situation
 load_path = './workdirs/epoch_xxx'                               # must have generator_module.mge file in folder epoch_xxx, xxx is digital
 dataroot = "pathtoyourdataset/train/train_sharp_bicubic"
 exp_name = 'basicVSR_track1_test_for_validation'                # any name you like
+eval_part = tuple(map(str, ["{0:03}".format(x) for x in range(240, 270)]))  # make sure index existed in the dataroot
 ```
 
 and then , run  it:
