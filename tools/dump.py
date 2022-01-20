@@ -91,14 +91,13 @@ def dump_upsample(model, graph_name):
 
 
 """
-dump three inference model with
+dump three inference model with these tensors:
 (Pdb) hidden.shape
 (2, 96, 180, 320)
 (Pdb) flow.shape
 (2, 2, 180, 320)
 (Pdb) now_frame.shape
 (2, 3, 180, 320)
-
 
 (Pdb) forward_hiddens[i].shape
 (1, 96, 180, 320)
@@ -115,7 +114,6 @@ def dump():
                               optimizers_cfg=cfg.optimizers,
                               work_dir=cfg.work_dir)
     runner.load_checkpoint(cfg.load_from, load_optim=False)
-    model.generator.eval()
 
     dump_flownet(model.generator.flownet, "flownet.mgb")
     dump_generator(model.generator, "generator.mgb")
@@ -162,6 +160,8 @@ def test_inference_result(path,
 """
 save flownet/generator/upsample GT input and output to .npy, use this function to test
 """
+
+
 def test_inference():
     test_inference_result('flownet.mgb', {
         'tenFirst': 'flownet_in1.npy',
