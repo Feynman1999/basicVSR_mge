@@ -10,6 +10,8 @@ import time
 import argparse
 import megengine as mge
 import megengine.functional as F
+from megengine.core.ops import builtin
+from megengine.core._imperative_rt.core2 import apply
 from megengine import jit
 import numpy as np
 import megenginelite as mgelite
@@ -56,7 +58,10 @@ def dump_generator(model, graph_name):
         outputs = model(data1, data2, data3)
         return outputs
 
+    t0 = time.time()
     pred_func(data1, data2, data3)
+    print("dump pred_func {}".format(time.time() - t0))
+
     pred_func.dump(
         graph_name,
         arg_names=["hidden", "flow", "nowFrame"],
@@ -71,9 +76,21 @@ def dump_upsample(model, graph_name):
     data1 = mge.Tensor(np.random.random((1, 96, 180, 320)), dtype=np.float32)
     data2 = mge.Tensor(np.random.random((1, 96, 180, 320)), dtype=np.float32)
 
+    data1_ = mge.Tensor(np.random.random((2, 96, 180, 320)), dtype=np.float32)
+    data2_ = mge.Tensor(np.random.random((2, 96, 180, 320)), dtype=np.float32)
+
     @jit.trace(capture_as_const=True)
     def pred_func(data1, data2):
-        out = model.conv4(F.concat([data1, data2], axis=1))
+        shape1 = F.concat([data1.shape[0], 96, 180, 320])
+        shape2 = F.concat([data2.shape[0], 96, 180, 320])
+
+        def broadcast_to(inp, shp):
+            return apply(builtin.Broadcast(), inp, shp)[0]
+
+        forward_hidden = broadcast_to(data1, shape1)
+        backward_hidden = broadcast_to(data2, shape2)
+
+        out = model.conv4(F.concat([forward_hidden, backward_hidden], axis=1))
         out = model.reconstruction(out)
         out = model.lrelu(model.upsample1(out))
         out = model.lrelu(model.upsample2(out))
@@ -82,6 +99,7 @@ def dump_upsample(model, graph_name):
         return out
 
     pred_func(data1, data2)
+    pred_func(data1_, data2_)
     pred_func.dump(
         graph_name,
         arg_names=["forward_hidden", "backward_hidden"],
@@ -133,9 +151,10 @@ def test_inference_result(path,
         if data is None:
             assert ("input .npy unavailable")
         tensor.set_data_by_copy(data)
+        print(data.shape)
 
     time_sum = 0
-    REPEAT = 50
+    REPEAT = 10
     print(f"test model {path} ...")
 
     # warmup
@@ -143,11 +162,12 @@ def test_inference_result(path,
     net.wait()
 
     # loop test
-    for _ in range(100):
-        begin = time.time()
+    for _ in range(REPEAT):
+        t0 = time.time()
         net.forward()
         net.wait()
-        time_sum = time_sum + time.time() - begin
+        print(time.time() - t0)
+        time_sum = time_sum + time.time() - t0 
     print(f"avg timecost {time_sum * 1000 / REPEAT} ms")
 
     tensor = net.get_io_tensor(net.get_all_output_name()[0])
@@ -164,8 +184,8 @@ save flownet/generator/upsample GT input and output to .npy, use this function t
 
 def test_inference():
     test_inference_result('flownet.mgb', {
-        'tenFirst': 'flownet_in1.npy',
-        'tenSecond': 'flownet_in2.npy'
+        'tenFirst': 'now_frame.npy',
+        'tenSecond': 'now_frame.npy'
     }, 'flownet_out.npy')
 
     test_inference_result(
