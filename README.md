@@ -99,6 +99,18 @@ python  tools/test.py  configs/restorers/BasicVSR/basicVSR_test_test.py --gpuids
 
 > notice: only support one gpu config for gpuids now
 
+## Dump for inference
+You can dump the model for deployment. 
+```bash
+$ python3 tools/dump.py configs/restorers/BasicVSR/basicVSR_test_valid.py
+...
+$ ls *.mgb
+... flownet.mgb
+... generator.mgb
+... upsample.mgb
+```
+According to previous experience, the dumped model is accelerated by 3 to 10 times.
+
 ## Results
 
 * all output frames of test dataset produced by our model can be found here:  (3000 frames, trained only on 240 training clips)
