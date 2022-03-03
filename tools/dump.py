@@ -133,9 +133,9 @@ def dump():
                               work_dir=cfg.work_dir)
     runner.load_checkpoint(cfg.load_from, load_optim=False)
 
-    dump_flownet(model.generator.flownet, "flownet.mgb")
-    dump_generator(model.generator, "generator.mgb")
-    dump_upsample(model.generator, "upsample.mgb")
+    dump_flownet(model.generator.flownet, "flownet.mge")
+    dump_generator(model.generator, "generator.mge")
+    dump_upsample(model.generator, "upsample.mge")
 
 
 def test_inference_result(path,
@@ -183,20 +183,20 @@ save flownet/generator/upsample GT input and output to .npy, use this function t
 
 
 def test_inference():
-    test_inference_result('flownet.mgb', {
+    test_inference_result('flownet.mge', {
         'tenFirst': 'now_frame.npy',
         'tenSecond': 'now_frame.npy'
     }, 'flownet_out.npy')
 
     test_inference_result(
-        'generator.mgb', {
+        'generator.mge', {
             'hidden': 'generator_in1.npy',
             'flow': 'generator_in2.npy',
             'nowFrame': 'generator_in3.npy'
         }, 'generator_out.npy')
 
     test_inference_result(
-        'upsample.mgb', {
+        'upsample.mge', {
             'forward_hidden': 'upsample_in1.npy',
             'backward_hidden': 'upsample_in2.npy'
         }, 'upsample_out.npy')
